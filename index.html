@@ -6,6 +6,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hélios</title>
   <meta name="theme-color" content="#04060b">
+  <link rel="icon" type="image/svg+xml" href="icon.svg">
+  <link rel="apple-touch-icon" href="icon.svg">
   <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1328,6 +1330,11 @@
     .tourmenu button:last-child { border-bottom: none }
     .tourmenu button:hover { color: var(--brass-bright); background: rgba(201, 164, 92, .08) }
 
+    /* modo ao vivo */
+    .live-dot { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--paper-dim); margin-right: 6px; vertical-align: middle }
+    #liveBtn.on .live-dot { background: #ff5a4a; box-shadow: 0 0 7px #ff5a4a; animation: livePulse 1.6s ease-in-out infinite }
+    @keyframes livePulse { 0%, 100% { opacity: 1 } 50% { opacity: .3 } }
+
     /* rótulos de estrelas e céu profundo */
     .starlbl { font-family: 'Azeret Mono', monospace; font-size: 8px; letter-spacing: .14em; color: rgba(180, 200, 230, .62); text-transform: uppercase; pointer-events: none }
     .dsolbl { font-family: 'Fraunces', serif; font-style: italic; font-size: 10px; color: rgba(201, 164, 92, .68); pointer-events: none }
@@ -1381,6 +1388,7 @@
     </div>
     <div class="neo" id="neoBox"></div>
     <div class="neo" id="swBox" style="display:none"></div>
+    <div class="ecl" id="agendaBox"></div>
     <div class="ecl" id="skyBox"></div>
     <div class="ecl" id="anniBox"></div>
     <div class="ecl" id="launchBox"></div>
@@ -1484,6 +1492,7 @@
         <input type="date" id="datePick" min="1900-01-01" max="2100-12-31">
       </div>
       <button class="sbtn" id="todayBtn" data-i18n="todayBtn">Hoje</button>
+      <button class="sbtn" id="liveBtn" title="tempo real / real time"><span class="live-dot"></span><span id="liveTxt" data-i18n="live">ao vivo</span></button>
       <div class="divider"></div>
       <button class="sbtn" id="scaleBtn"></button>
     </div>
@@ -1532,7 +1541,7 @@
         tour: '▶ Grande Tour', today: '✦ Hoje no espaço',
         apodTitle: 'Imagem astronômica do dia', loading: 'consultando a NASA…',
         timeline: 'Linha do tempo · 1900 — 2100', flow: 'Fluxo do tempo', ephem: 'Efeméride',
-        todayBtn: 'Hoje', scaleCompact: 'Escala · compacta', scaleReal: 'Escala · real',
+        todayBtn: 'Hoje', live: 'ao vivo', scaleCompact: 'Escala · compacta', scaleReal: 'Escala · real',
         h1: 'arraste', h1b: 'para orbitar', h2: 'role', h2b: 'para aproximar',
         h3: 'clique', h3b: 'num astro', h4b: 'pausa',
         gErrantes: 'errantes', gAnoes: 'anões & cometas', gSondas: 'sondas',
@@ -1559,6 +1568,8 @@
         magLbl: 'brilho aparente', zodiacLbl: 'signo zodiacal', phaseP: 'fase',
         scaleLbl: 'escala (Sol = bola de 30 cm)', scaleSun: 'a bola de referência (30 cm)', scaleAt: 'a', soundPlay: 'ouvir', soundFail: 'áudio indisponível',
         conjTitle: 'próxima conjunção', elongLbl: 'maior elongação', elongAM: 'matutina', elongPM: 'vespertina',
+        agendaTitle: 'agenda cósmica · o que vem por aí', evSolEcl: 'eclipse solar', evLunEcl: 'eclipse lunar',
+        evOpp: (n) => `${n} na oposição`, evConj: (a, b) => `${a} encontra ${b}`, evElong: (n) => `${n} na maior elongação`, evShower: (n) => `pico das ${n}`,
         glossTitle: 'glossário', anniTitle: 'efemérides · por estes dias', launchTitle: 'próximos lançamentos', yrsAgo: (n) => `${n} anos`,
         helpTitle: 'atalhos & guia', quizTitle: 'quiz astronômico', quizQ: 'Que astro tem estas características?',
         quizNext: 'próxima →', quizScore: (a, b) => `${a} de ${b}`, tourPick: 'escolha um roteiro',
@@ -1589,7 +1600,7 @@
         tour: '▶ Grand Tour', today: '✦ Space today',
         apodTitle: 'Astronomy picture of the day', loading: 'calling NASA…',
         timeline: 'Timeline · 1900 — 2100', flow: 'Flow of time', ephem: 'Ephemeris',
-        todayBtn: 'Today', scaleCompact: 'Scale · compact', scaleReal: 'Scale · true',
+        todayBtn: 'Today', live: 'live', scaleCompact: 'Scale · compact', scaleReal: 'Scale · true',
         h1: 'drag', h1b: 'to orbit', h2: 'scroll', h2b: 'to zoom',
         h3: 'click', h3b: 'a body', h4b: 'pause',
         gErrantes: 'wanderers', gAnoes: 'dwarfs & comets', gSondas: 'spacecraft',
@@ -1616,6 +1627,8 @@
         magLbl: 'apparent brightness', zodiacLbl: 'zodiac sign', phaseP: 'phase',
         scaleLbl: 'scale (Sun = 30 cm ball)', scaleSun: 'the reference ball (30 cm)', scaleAt: 'at', soundPlay: 'listen', soundFail: 'audio unavailable',
         conjTitle: 'next conjunction', elongLbl: 'greatest elongation', elongAM: 'morning', elongPM: 'evening',
+        agendaTitle: 'cosmic agenda · what’s coming', evSolEcl: 'solar eclipse', evLunEcl: 'lunar eclipse',
+        evOpp: (n) => `${n} at opposition`, evConj: (a, b) => `${a} meets ${b}`, evElong: (n) => `${n} at greatest elongation`, evShower: (n) => `${n} peak`,
         glossTitle: 'glossary', anniTitle: 'milestones · around now', launchTitle: 'upcoming launches', yrsAgo: (n) => `${n} yrs`,
         helpTitle: 'shortcuts & guide', quizTitle: 'astronomy quiz', quizQ: 'Which body has these traits?',
         quizNext: 'next →', quizScore: (a, b) => `${a} of ${b}`, tourPick: 'choose a tour',
@@ -2410,7 +2423,7 @@
 
     const state = {
       jd: NOW_JD, prevJd: NOW_JD,
-      daysPerSec: 20, paused: false,
+      daysPerSec: 20, paused: false, live: false,
       sel: null, focusKey: null, desiredDist: 0, transitionUntil: 0,
       tour: null, soundOn: false,
     };
@@ -3090,6 +3103,60 @@
       attr.needsUpdate = true;
     }
 
+    /* ——— troianos de Júpiter (enxames co-orbitais em L4/L5) ——— */
+    const TROJ_N = 900, trojData = [];
+    let trojPoints;
+    {
+      for (let i = 0; i < TROJ_N; i++) trojData.push({
+        lead: i < TROJ_N / 2 ? 1 : -1,          // L4 (60° à frente) ou L5 (60° atrás)
+        off: (Math.random() - 0.5) * 46 * DEG,  // libração ao redor do ponto
+        a: 5.2 + (Math.random() - 0.5) * 0.7,   // dispersão radial
+        z: (Math.random() - 0.5) * 0.9,
+      });
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(new Float32Array(TROJ_N * 3), 3));
+      trojPoints = new THREE.Points(geo, new THREE.PointsMaterial({ color: 0x9a865c, size: 1.2, sizeAttenuation: false, transparent: true, opacity: .5, depthWrite: false }));
+      trojPoints.frustumCulled = false;
+      scene.add(trojPoints);
+    }
+    function updateTrojans() {
+      const j = REG.jupiter && REG.jupiter.lastAU; if (!j) return;
+      const thetaJ = Math.atan2(j.y, j.x);
+      const attr = trojPoints.geometry.attributes.position, v = new THREE.Vector3();
+      for (let i = 0; i < TROJ_N; i++) {
+        const d = trojData[i], ang = thetaJ + d.lead * 60 * DEG + d.off;
+        const x = d.a * Math.cos(ang), y = d.a * Math.sin(ang);
+        toDisplay({ x, y, z: d.z, r: Math.hypot(x, y, d.z) }, v);
+        attr.setXYZ(i, v.x, v.y, v.z);
+      }
+      attr.needsUpdate = true;
+    }
+
+    /* ——— pontos de Lagrange Sol-Terra (visíveis ao selecionar Terra ou Sol; o James Webb fica em L2) ——— */
+    const lagGroup = new THREE.Group(); scene.add(lagGroup);
+    const lagLabels = ['L1', 'L2', 'L3', 'L4', 'L5'].map(n => {
+      const l = makeLabel(n, 'starlbl', 0); lagGroup.add(l.obj);
+      const dot = new THREE.Mesh(new THREE.SphereGeometry(.1, 8, 8), new THREE.MeshBasicMaterial({ color: 0xc9a45c }));
+      lagGroup.add(dot);
+      return { n, obj: l.obj, dot };
+    });
+    function updateLagrange() {
+      lagGroup.visible = state.sel === 'terra' || state.sel === 'sol';
+      if (!lagGroup.visible) return;
+      const e = REG.terra && REG.terra.lastAU; if (!e) return;
+      const ex = e.x, ey = e.y, c = Math.cos(60 * DEG), s = Math.sin(60 * DEG);
+      const pos = {
+        L1: [ex * 0.99, ey * 0.99], L2: [ex * 1.01, ey * 1.01], L3: [-ex, -ey],
+        L4: [ex * c - ey * s, ex * s + ey * c], L5: [ex * c + ey * s, -ex * s + ey * c],
+      };
+      const v = new THREE.Vector3();
+      for (const L of lagLabels) {
+        const [x, y] = pos[L.n];
+        toDisplay({ x, y, z: 0, r: Math.hypot(x, y) }, v);
+        L.obj.position.copy(v); L.dot.position.copy(v);
+      }
+    }
+
     /* ——— sondas ——— */
 
     function craftBasePos(key, t) {
@@ -3177,7 +3244,7 @@
         const attr = r.traj.geometry.attributes.position;
         const n = attr.count - 1;
         const v = new THREE.Vector3();
-        const tEnd = c.orbitEls ? c.launch + 0.25 : Math.min(decYear(state.jd) + 2, 2100);
+        const tEnd = c.ended ? c.ended : (c.orbitEls ? c.launch + 0.25 : Math.min(decYear(state.jd) + 2, 2100));
         for (let i = 0; i <= n; i++) {
           const t = c.launch + (tEnd - c.launch) * i / n;
           const p = craftBasePos(c.key, t) || { x: 0, y: 0, z: 0, r: 0.001 };
@@ -3545,11 +3612,20 @@
     /* ——— tempo ——— */
     const iconPlay = $('iconPlay'), iconPause = $('iconPause');
     function togglePause() {
+      if (state.live) setLive(false);
       state.paused = !state.paused;
       iconPlay.style.display = state.paused ? 'block' : 'none';
       iconPause.style.display = state.paused ? 'none' : 'block';
     }
     $('playBtn').addEventListener('click', togglePause);
+
+    // modo ao vivo: trava a efeméride na hora real, avançando em tempo real
+    function setLive(on) {
+      state.live = on;
+      $('liveBtn').classList.toggle('on', on);
+      if (on) { state.paused = false; iconPlay.style.display = 'none'; iconPause.style.display = 'block'; }
+    }
+    $('liveBtn').addEventListener('click', () => setLive(!state.live));
 
     const speedRange = $('speedRange'), speedLabel = $('speedLabel');
     function applySpeed() {
@@ -3563,14 +3639,16 @@
             dps < 365 ? `${(dps / 30.4).toFixed(1)} ${lang === 'pt' ? 'meses' : 'months'}/s` :
               `${(dps / 365.25).toFixed(1)} ${lang === 'pt' ? 'anos' : 'years'}/s`;
     }
-    speedRange.addEventListener('input', applySpeed);
+    speedRange.addEventListener('input', () => { setLive(false); applySpeed(); });
 
     const timeline = $('timeline');
     timeline.addEventListener('input', () => {
+      setLive(false);
       state.jd = JD_MIN + (+timeline.value) * (JD_MAX - JD_MIN);
     });
-    $('todayBtn').addEventListener('click', () => { state.jd = jdFromDate(new Date()); });
+    $('todayBtn').addEventListener('click', () => { setLive(false); state.jd = jdFromDate(new Date()); });
     $('datePick').addEventListener('change', e => {
+      setLive(false);
       if (e.target.value) state.jd = jdFromDate(new Date(e.target.value + 'T12:00:00Z'));
     });
 
@@ -3869,6 +3947,33 @@
       { term: { pt: 'Magnitude', en: 'Magnitude' }, def: { pt: 'escala de brilho: quanto menor o número, mais brilhante (a olho nu até ≈ 6).', en: 'brightness scale: the smaller the number, the brighter (naked eye to ≈ 6).' } },
       { term: { pt: 'Efeméride', en: 'Ephemeris' }, def: { pt: 'a posição calculada de um astro para uma data.', en: 'the computed position of a body for a given date.' } },
     ];
+    // agenda cósmica: agrega e ordena por data os próximos eventos do céu
+    function updateAgenda() {
+      const t = T_(), box = $('agendaBox'), from = state.jd;
+      box.innerHTML = SKY_HEAD(t.agendaTitle) + `<span style="opacity:.6">…</span>`;
+      setTimeout(() => {
+        const ev = [], nm = k => tt(REG[k].data.name);
+        const es = nextEclipse(from, 'solar'), el = nextEclipse(from, 'lunar');
+        if (es) ev.push({ jd: es, label: t.evSolEcl, key: 'lua' });
+        if (el) ev.push({ jd: el, label: t.evLunEcl, key: 'lua' });
+        for (const k of ['marte', 'jupiter', 'saturno']) { const o = nextOpposition(k, from); if (o) ev.push({ jd: o, label: t.evOpp(nm(k)), key: k }); }
+        const c = nextConjunction(from); if (c) ev.push({ jd: c.jd, label: t.evConj(nm(c.a), nm(c.b)), key: c.a });
+        for (const k of ['mercurio', 'venus']) { const g = nextGreatestElong(k, from); if (g) ev.push({ jd: g.jd, label: t.evElong(nm(k)), key: k }); }
+        const now = dateFromJd(from), y0 = now.getUTCFullYear();
+        SHOWERS.forEach(s => {
+          let d = new Date(Date.UTC(y0, s.mo - 1, s.day, 12));
+          if (jdFromDate(d) < from - 0.5) d = new Date(Date.UTC(y0 + 1, s.mo - 1, s.day, 12));
+          ev.push({ jd: jdFromDate(d), label: t.evShower(tt(s.name)) });
+        });
+        ev.sort((a, b) => a.jd - b.jd);
+        const fmt = jd => dateFromJd(jd).toLocaleDateString(lang === 'pt' ? 'pt-BR' : 'en-US', { day: '2-digit', month: 'short', year: 'numeric' }).replace('.', '');
+        box.innerHTML = SKY_HEAD(t.agendaTitle) + ev.slice(0, 7).map(e =>
+          `<b>${fmt(e.jd)}</b> · ${e.label}<button data-jd="${e.jd}"${e.key ? ` data-k="${e.key}"` : ''}>${t.go}</button>`).join('<br>');
+        box.querySelectorAll('button').forEach(b => b.addEventListener('click', () => {
+          setLive(false); state.jd = +b.dataset.jd; b.dataset.k ? selectBody(b.dataset.k) : deselect();
+        }));
+      }, 30);
+    }
     // efemérides: aniversários astronômicos por volta de hoje (data real)
     function updateAnniversaries() {
       const t = T_(), box = $('anniBox'), now = new Date(), todayJD = jdFromDate(now);
@@ -4332,6 +4437,7 @@
       const dr = $('drawer');
       dr.classList.toggle('open');
       if (!dr.classList.contains('open')) return;
+      updateAgenda();
       updateSky();
       updateAnniversaries();
       updateLaunches();
@@ -4538,7 +4644,8 @@
       clock = now;
 
       // tempo simulado
-      if (!state.paused && !document.hidden) state.jd += state.daysPerSec * dt;
+      if (state.live) state.jd = jdFromDate(new Date());
+      else if (!state.paused && !document.hidden) state.jd += state.daysPerSec * dt;
       state.jd = Math.min(Math.max(state.jd, JD_MIN), JD_MAX);
       const dDays = state.jd - state.prevJd;
       state.prevJd = state.jd;
@@ -4639,6 +4746,8 @@
         }
       }
       refreshBelt(dDays);
+      updateTrojans();
+      updateLagrange();
 
       // física do laboratório
       stepLab(dDays);
