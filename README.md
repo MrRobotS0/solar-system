@@ -8,10 +8,9 @@ Comecei isto querendo uma coisa só: poder olhar para o sistema solar como quem 
 
 ## Abrir
 
-É um único arquivo. Abra o `index.html` no navegador e pronto.
+**[mrrobots0.github.io/solar-system](https://mrrobots0.github.io/solar-system/)**
 
-Online: **[mrrobots0.github.io/solar-system](https://mrrobots0.github.io/solar-system/)**
-Por HTTPS ele guarda tudo para funcionar offline e pode mostrar o céu da sua noite a partir da sua localização.
+Funciona offline depois da primeira visita e pode mostrar o céu da sua noite a partir da sua localização.
 
 ## Por dentro
 
