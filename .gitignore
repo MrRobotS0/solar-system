@@ -1,0 +1,11 @@
+# cópias de segurança locais (fora do repositório)
+index.backup-*.html
+sw.backup.js
+
+# capturas de desenvolvimento (v3/v4)
+v3-*.png
+v4-*.png
+
+# sistema operacional
+.DS_Store
+Thumbs.db

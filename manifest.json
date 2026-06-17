@@ -1,0 +1,13 @@
+{
+  "name": "Hélios — um atlas vivo do sistema solar",
+  "short_name": "Hélios",
+  "description": "Simulação do sistema solar com efemérides reais, texturas da NASA e máquina do tempo.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#04060b",
+  "theme_color": "#04060b",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}
