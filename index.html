@@ -216,34 +216,41 @@
       right: 46px;
       z-index: 12;
       display: flex;
-      gap: 10px;
+      align-items: center;
+      gap: 15px;
       opacity: 0;
       animation: rise 1.4s cubic-bezier(.22, 1, .36, 1) 3s forwards
     }
 
     .tbtn {
       appearance: none;
-      background: rgba(7, 10, 18, .6);
-      border: 1px solid var(--hairline);
+      background: none;
+      border: none;
       color: var(--paper-dim);
       font-family: 'Azeret Mono', monospace;
-      font-size: 9px;
-      letter-spacing: .26em;
-      text-transform: uppercase;
-      padding: 10px 16px;
+      font-size: 15px;
+      line-height: 1;
+      letter-spacing: .08em;
+      padding: 6px 7px;
       cursor: pointer;
-      transition: all .3s;
-      backdrop-filter: blur(8px)
+      transition: color .25s, transform .25s;
+      text-shadow: 0 1px 4px rgba(0, 0, 0, .7)
     }
 
     .tbtn:hover {
       color: var(--brass-bright);
-      border-color: var(--brass-dim)
+      transform: translateY(-1px)
     }
 
     .tbtn.on {
-      color: var(--brass-bright);
-      border-color: var(--brass)
+      color: var(--brass-bright)
+    }
+
+    #langBtn {
+      font-size: 10px;
+      letter-spacing: .2em;
+      align-self: center;
+      opacity: .85
     }
 
     /* gaveta "hoje no espaço" */
@@ -504,8 +511,9 @@
 
     .divider {
       width: 1px;
-      height: 30px;
+      height: 18px;
       background: var(--hairline);
+      opacity: .6;
       flex: none
     }
 
@@ -545,15 +553,15 @@
     .sbtn {
       appearance: none;
       background: none;
-      border: 1px solid var(--hairline);
+      border: none;
       color: var(--paper-dim);
       font-family: 'Azeret Mono', monospace;
-      font-size: 8px;
-      letter-spacing: .26em;
+      font-size: 9px;
+      letter-spacing: .22em;
       text-transform: uppercase;
-      padding: 8px 13px;
+      padding: 7px 6px;
       cursor: pointer;
-      transition: all .3s;
+      transition: color .25s;
       flex: none
     }
 
@@ -1120,7 +1128,13 @@
 
     .labp .row .sbtn {
       flex: 1;
-      text-align: center
+      text-align: center;
+      border: 1px solid var(--hairline);
+      padding: 9px 6px
+    }
+
+    .labp .row .sbtn:hover {
+      border-color: var(--brass-dim)
     }
 
     .labp .note {
@@ -1318,8 +1332,8 @@
 
     /* menu de tours */
     .tourmenu {
-      position: absolute; top: 52px; left: 18px; z-index: 20; display: none;
-      background: var(--panel-bg); border: 1px solid var(--brass-dim); box-shadow: 0 16px 44px rgba(0, 0, 0, .55)
+      position: fixed; top: 72px; right: 46px; z-index: 20; display: none;
+      background: var(--panel-bg); backdrop-filter: blur(14px); border: 1px solid var(--brass-dim); box-shadow: 0 16px 44px rgba(0, 0, 0, .55)
     }
     .tourmenu.show { display: block }
     .tourmenu button {
@@ -1370,8 +1384,8 @@
   </header>
 
   <div class="topbar">
-    <button class="tbtn" id="tourBtn" data-i18n="tour">▶ Grande Tour</button>
-    <button class="tbtn" id="drawerBtn" data-i18n="today">✦ Hoje no espaço</button>
+    <button class="tbtn" id="tourBtn" title="roteiros guiados / guided tours">▶</button>
+    <button class="tbtn" id="drawerBtn" title="hoje no espaço / today in space">✦</button>
     <button class="tbtn" id="labBtn" title="laboratório gravitacional / gravity lab">⚗</button>
     <button class="tbtn" id="pilotBtn" title="modo piloto / pilot mode">✈</button>
     <button class="tbtn on" id="constBtn" title="constelações / constellations">✶</button>
